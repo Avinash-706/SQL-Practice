@@ -365,64 +365,26 @@ Constraints are strict rules applied to columns to ensure **Data Accuracy, Relia
     * Can be a literal value, a system function (like `SYSDATE`), but cannot be a subquery.
 *   **Syntax:** `column_name data_type DEFAULT 'value'` *(e.g., `CITY VARCHAR2(50) DEFAULT 'Mumbai'`)*
 
+<hr / style="border: 1px solid rgb(98, 117, 187)">
 
-<!-- Centered vertical stack for logo + text + button -->
-<div style="
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background-color: #1A202C;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 173, 181, 0.2);
-    border: 1px solid #2d3748;
-    color: white;
-    margin-top: 50px;
-">
-    <!-- Logo -->
-    <img src="../favicon.jpeg" alt="Avinash Logo" width="220" style="
-        text-align: center;
-        border-radius: 50%;
-        box-shadow: 0 0 15px rgba(0, 173, 181, 0.6);
-        border: 2px solid #00ADB5;
-    ">
-    <br>
-    <!-- Text -->
-    <p style="
-        margin: 0;
-        font-weight: bold;
-        font-size: 18px;
-        letter-spacing: 0.5px;
-        text-align: center;
-        color: #E2E8F0;
-    ">
-        © 2025 Avinash Dhanuka — System Designing Notebook
-    </p>
-    <br>
-    <!-- Button -->
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=avunashdhanuka@gmail.com&su=System%20Design%20Query%20from%20[Your%20Name]&body=📘%20Hello%20Avinash,%0D%0A%0D%0AMy%20name%20is%20[Your%20Name]%20and%20I%20wanted%20to%20reach%20out%20regarding%20your%20System%20Design%20Notebook.%0D%0A%0D%0A🔹%20Query%20Topic:%20[Enter%20your%20topic]%0D%0A🔹%20Message:%20[Type%20your%20message%20here]%0D%0A%0D%0AThank%20you%20for%20your%20time!%0D%0A%0D%0ABest%20regards,%0D%0A[Your%20Name]"
-       target="_blank"
-       style="
-           text-align: center;
-           background-color: #2563eb;
-           color: white;
-           padding: 12px 24px;
-           text-decoration: none;
-           font-weight: bold;
-           border-radius: 8px;
-           font-family: 'Verdana', sans-serif;
-           box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-           transition: background-color 0.3s ease, transform 0.2s ease;
-           display: inline-block;
-       "
-       onmouseover="this.style.backgroundColor='#1e40af'; this.style.transform='scale(1.05)';"
-       onmouseout="this.style.backgroundColor='#2563eb'; this.style.transform='scale(1)';">
-        📧 Contact Me via Gmail
-    </a>
-    <br>
-    <p style="text-align:center; margin-top: 15px; font-size: 13px; color: #A0AEC0;">
-        Crafted with ❤️ for learning, clarity, and scalability
-    </p>
+<div align="center">
+<table>
+<tr>
+<td align="center">
+<br />
+<img src="../favicon.png" width="120" height="120" style="border-radius: 50%; object-fit: cover;">
+<h3>© 2025 Avinash Dhanuka</h3>
+<p>Master Guide: Oracle SQL & RDBMS Internals</p>
+<p><em>Crafted with ❤️ for Data Consistency, Integrity & Performance</em></p>
+
+<a href="https://mail.google.com/mail/?view=cm&fs=1&to=avunashdhanuka@gmail.com&su=SQL%20Master%20Guide%20Query&body=🗄️%20Hello%20Avinash,%0D%0A%0D%0AMy%20name%20is%20[Your%20Name]%20and%20I%20wanted%20to%20reach%20out%20regarding%20your%20SQL%20Guide.%0D%0A%0D%0A🔹%20Query%20Topic:%20[Enter%20your%20topic]%0D%0A🔹%20Message:%20[Type%20your%20message%20here]%0D%0A%0D%0AThank%20you!%0D%0A%0D%0ABest%20regards,%0D%0A[Your%20Name]" target="_blank">
+
+<img src="https://img.shields.io/badge/📧_Contact_Me_via_Gmail-2563EB?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail">
+
+</a>
+<br />
+<br />
+</td>
+</tr>
+</table>
 </div>
