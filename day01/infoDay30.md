@@ -8,6 +8,31 @@
 
 </div>
 
+
+<hr / style="border: 1px solid rgb(98, 117, 187)">
+
+<div align="center">
+<table>
+<tr>
+<td align="center">
+<br />
+<img src="../favicon.png" width="120" height="120" style="border-radius: 50%; object-fit: cover;">
+<h3>© 2025 Avinash Dhanuka</h3>
+<p>Master Guide: SQL & RDBMS Internals</p>
+<p><em>Crafted with ❤️ for Data Consistency, Integrity & Performance</em></p>
+
+<a href="https://mail.google.com/mail/?view=cm&fs=1&to=avunashdhanuka@gmail.com&su=SQL%20Master%20Guide%20Query&body=🗄️%20Hello%20Avinash,%0D%0A%0D%0AMy%20name%20is%20[Your%20Name]%20and%20I%20wanted%20to%20reach%20out%20regarding%20your%20SQL%20Guide.%0D%0A%0D%0A🔹%20Query%20Topic:%20[Enter%20your%20topic]%0D%0A🔹%20Message:%20[Type%20your%20message%20here]%0D%0A%0D%0AThank%20you!%0D%0A%0D%0ABest%20regards,%0D%0A[Your%20Name]" target="_blank">
+
+<img src="https://img.shields.io/badge/📧_Contact_Me_via_Gmail-2563EB?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail">
+
+</a>
+<br />
+<br />
+</td>
+</tr>
+</table>
+</div>
+
 > **Author's Note:** This advanced documentation covers the complete lifecycle of data handling, from raw entities to advanced **Oracle SQL** constraints, adhering to **E.F. Codd's Relational Model**.
 
 ---
@@ -303,7 +328,13 @@ Used when data exceeds 4000 bytes.
 
 ## 8. Constraints
 
-Constraints are rules enforced on data columns to ensure **Validity** and **Integrity**.
+Constraints are strict rules applied to columns to ensure **Data Accuracy, Reliability, and Integrity**. If a user tries to insert or update data that violates these rules, the RDBMS will instantly reject the operation.
+
+<p align="center">
+  <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230623123129/SQL-Constraints.png" alt="SQL Constraints Diagram" width="550">
+</p>
+
+### Summary Table
 
 | Constraint | Description | Example |
 | :--- | :--- | :--- |
@@ -315,22 +346,46 @@ Constraints are rules enforced on data columns to ensure **Validity** and **Inte
 | **DEFAULT** | Inserts a default value if none is provided. | `City DEFAULT 'Bangalore'` |
 
 ---
-*Created for Advanced Oracle SQL Learning.*
-<div align="center">
-<table>
-<tr>
-<td align="center">
-<br />
-<img src="../favicon.png" width="120" height="120" style="object-fit: cover;">
-<h3>© 2026 Avinash Dhanuka</h3>
-<p>System Designing Notebook</p>
-<p><em>Crafted with ❤️ for learning & scalability</em></p>
-<a href="https://mail.google.com/mail/?view=cm&fs=1&to=avunashdhanuka@gmail.com&su=System%20Design%20Query">
-<img src="https://img.shields.io/badge/📧_Contact_Me_via_Gmail-2563EB?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail">
-</a>
-<br />
-<br />
-</td>
-</tr>
-</table>
-</div>
+
+### Detailed Analysis of Constraints
+
+#### 1. UNIQUE Constraint
+*   **Definition:** Ensures all values in a column are entirely distinct.
+*   **Limitation/Rule:** 
+    * It **does allow NULL values** (in Oracle, you can insert multiple NULLs because NULL is not equal to NULL). 
+    * A table can have multiple UNIQUE constraints.
+*   **Syntax:** `column_name data_type UNIQUE`
+
+#### 2. NOT NULL Constraint
+*   **Definition:** Restricts a column from accepting NULL (empty) values.
+*   **Limitation/Rule:** 
+    * Must be defined at the **column level** (inline) in Oracle. 
+    * Cannot be combined with NULL.
+*   **Syntax:** `column_name data_type NOT NULL`
+
+#### 3. CHECK Constraint
+*   **Definition:** Validates incoming data against a specific boolean condition.
+*   **Limitation/Rule:** 
+    * The condition cannot use subqueries.
+    * Cannot reference other tables, `SYSDATE`, `USER`, or `NEXTVAL`.
+*   **Syntax:** `column_name data_type CHECK (condition)` *(e.g., `CHECK (AGE >= 18)`)*
+
+#### 4. PRIMARY KEY Constraint (PK)
+*   **Definition:** Uniquely identifies each record in a table. It is mathematically equivalent to `UNIQUE + NOT NULL`.
+*   **Limitation/Rule:** 
+    * **Strict Rule:** A table can have **ONLY ONE** Primary Key.
+    * Cannot contain NULL values.
+*   **Syntax:** `column_name data_type PRIMARY KEY`
+
+#### 5. FOREIGN KEY Constraint (FK)
+*   **Definition:** Ensures Referential Integrity by linking data from one table to the Primary Key of another table.
+*   **Limitation/Rule:** 
+    * The referenced column in the parent table **must** be a `PRIMARY KEY` or `UNIQUE` key.
+    * You cannot delete a record in the parent table if it is being referenced by the child table (unless `ON DELETE CASCADE` is used).
+*   **Syntax:** `column_name data_type REFERENCES parent_table(parent_column)`
+
+#### 6. DEFAULT Constraint
+*   **Definition:** Automatically assigns a fixed value to a column if the user does not insert any value.
+*   **Limitation/Rule:** 
+    * Can be a literal value, a system function (like `SYSDATE`), but cannot be a subquery.
+*   **Syntax:** `column_name data_type DEFAULT 'value'` *(e.g., `CITY VARCHAR2(50) DEFAULT 'Mumbai'`)*
