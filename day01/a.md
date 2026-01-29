@@ -1,10 +1,3 @@
-Here is the updated `.md` file with the exact modifications you requested. 
-
-**TASK 1** has been completed by expanding the **Constraints** section with an image, detailed definitions, rules/limitations, and syntax for each constraint.
-**TASK 2** has been completed by converting your Python-string HTML into pure, clean HTML with the matching dark-theme styling from your screenshot, placed at the end of the document.
-
-***
-
 # 🗄️ Master Guide: Oracle SQL, Data & RDBMS Internals
 
 <div align="center">
