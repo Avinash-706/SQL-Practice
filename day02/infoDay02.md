@@ -184,6 +184,7 @@ Understanding "How" the database thinks is critical for writing fast queries. Th
 ### 🖼️ The Execution Flow Diagram
 
 ```mermaid
+```mermaid
 graph TB
 
     %% =======================
@@ -191,13 +192,13 @@ graph TB
     %% =======================
     subgraph L[LOGICAL SQL ORDER]
         direction TB
-        L1[SELECT<br/>Choose Columns]
-        L2[FROM<br/>Base Tables]
-        L3[JOIN<br/>Combine Tables]
-        L4[WHERE<br/>Filter Rows]
-        L5[GROUP BY<br/>Create Groups]
-        L6[HAVING<br/>Filter Groups]
-        L7[ORDER BY<br/>Sort Result]
+        L1[SELECT<br/>CHOOSE COLUMNS]
+        L2[FROM<br/>BASE TABLES]
+        L3[JOIN<br/>COMBINE TABLES]
+        L4[WHERE<br/>FILTER ROWS]
+        L5[GROUP BY<br/>CREATE GROUPS]
+        L6[HAVING<br/>FILTER GROUPS]
+        L7[ORDER BY<br/>SORT RESULT]
     end
 
     %% =======================
@@ -205,21 +206,21 @@ graph TB
     %% =======================
     subgraph E[ACTUAL EXECUTION ORDER]
         direction TB
-        E1[FROM<br/>Identify Tables]
-        E2[JOIN<br/>Apply Join Conditions]
-        E3[WHERE<br/>Remove Rows]
-        E4[GROUP BY<br/>Build Aggregates]
-        E5[HAVING<br/>Filter Aggregates]
-        E6[SELECT<br/>Compute Expressions]
-        E7[ORDER BY<br/>Final Sorting]
-        E8[OUTPUT<br/>Return Result]
+        E1[FROM<br/>IDENTIFY TABLES]
+        E2[JOIN<br/>APPLY CONDITIONS]
+        E3[WHERE<br/>REMOVE ROWS]
+        E4[GROUP BY<br/>BUILD AGGREGATES]
+        E5[HAVING<br/>FILTER AGGREGATES]
+        E6[SELECT<br/>COMPUTE OUTPUT]
+        E7[ORDER BY<br/>FINAL SORT]
+        E8[OUTPUT<br/>RETURN RESULT]
     end
 
-    %% Flows
+    %% MAIN FLOWS
     L1 --> L2 --> L3 --> L4 --> L5 --> L6 --> L7
     E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7 --> E8
 
-    %% Mapping
+    %% LOGICAL TO EXECUTION MAPPING
     L2 -.-> E1
     L3 -.-> E2
     L4 -.-> E3
@@ -228,28 +229,37 @@ graph TB
     L1 -.-> E6
     L7 -.-> E7
 
-    %% Subgraph background (neutral)
-    style L fill:#e5e7eb,stroke:#111827,stroke-width:2px,color:#000
-    style E fill:#e5e7eb,stroke:#111827,stroke-width:2px,color:#000
+    %% =======================
+    %% MAX VISIBILITY EDGES
+    %% =======================
+    linkStyle default stroke:#6b7280,stroke-width:4px
+ 
+
+    %% =======================
+    %% STYLING
+    %% =======================
+    style L fill:#e5e7eb,stroke:#111827,stroke-width:3px,color:#000
+    style E fill:#e5e7eb,stroke:#111827,stroke-width:3px,color:#000
 
     %% Logical nodes
-    style L1 fill:#fecaca,stroke:#991b1b,color:#000
-    style L2 fill:#fed7aa,stroke:#9a3412,color:#000
-    style L3 fill:#fdba74,stroke:#9a3412,color:#000
-    style L4 fill:#a5f3fc,stroke:#0e7490,color:#000
-    style L5 fill:#86efac,stroke:#166534,color:#000
-    style L6 fill:#6ee7b7,stroke:#065f46,color:#000
-    style L7 fill:#c7d2fe,stroke:#3730a3,color:#000
+    style L1 fill:#fecaca,stroke:#7f1d1d,stroke-width:2px,color:#000
+    style L2 fill:#fed7aa,stroke:#7c2d12,stroke-width:2px,color:#000
+    style L3 fill:#fdba74,stroke:#7c2d12,stroke-width:2px,color:#000
+    style L4 fill:#a5f3fc,stroke:#155e75,stroke-width:2px,color:#000
+    style L5 fill:#86efac,stroke:#14532d,stroke-width:2px,color:#000
+    style L6 fill:#6ee7b7,stroke:#064e3b,stroke-width:2px,color:#000
+    style L7 fill:#c7d2fe,stroke:#312e81,stroke-width:2px,color:#000
 
     %% Execution nodes
-    style E1 fill:#bae6fd,stroke:#075985,color:#000
-    style E2 fill:#7dd3fc,stroke:#075985,color:#000
-    style E3 fill:#67e8f9,stroke:#155e75,color:#000
-    style E4 fill:#86efac,stroke:#166534,color:#000
-    style E5 fill:#4ade80,stroke:#166534,color:#000
-    style E6 fill:#ddd6fe,stroke:#5b21b6,color:#000
-    style E7 fill:#c7d2fe,stroke:#3730a3,color:#000
-    style E8 fill:#93c5fd,stroke:#1d4ed8,stroke-width:3px,color:#000
+    style E1 fill:#bae6fd,stroke:#075985,stroke-width:2px,color:#000
+    style E2 fill:#7dd3fc,stroke:#075985,stroke-width:2px,color:#000
+    style E3 fill:#67e8f9,stroke:#155e75,stroke-width:2px,color:#000
+    style E4 fill:#86efac,stroke:#14532d,stroke-width:2px,color:#000
+    style E5 fill:#4ade80,stroke:#14532d,stroke-width:2px,color:#000
+    style E6 fill:#ddd6fe,stroke:#4c1d95,stroke-width:2px,color:#000
+    style E7 fill:#c7d2fe,stroke:#312e81,stroke-width:2px,color:#000
+    style E8 fill:#93c5fd,stroke:#1e40af,stroke-width:3px,color:#000
+
 ```
 
 #### Detailed Breakdown:
