@@ -474,6 +474,4 @@ If you use multiple operators in one line, Oracle executes them in this standard
 > *   `UNION ALL` keeps duplicates, making it **faster** as it just appends datasets.
 
 ---
----
 *Created for Advanced SQL Learning.*
-```
