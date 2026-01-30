@@ -233,7 +233,8 @@ In RDBMS, we can store everything in the form of a table, including **Metadata**
 **Example 1: Image Metadata (EXIF)**
 When you take a photo, the image is the "Data". The details (Shutter speed, Date, GPS) are "Metadata".
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Metadata_EN.png" alt="Metadata Example" width="400">
+  <img src="https://miro.medium.com/v2/resize:fit:1400/0*HdQollBBct4dkH_0" alt="Metadata Example" width="400">
+  <img src="https://databasetown.com/wp-content/uploads/2023/01/What-is-Database-Metadata-Examples-Types.jpg" alt="Metadata Example" width="400">
 </p>
 
 **Example 2: SQL Metadata (Data Dictionary)**
@@ -331,7 +332,7 @@ Used when data exceeds 4000 bytes.
 Constraints are strict rules applied to columns to ensure **Data Accuracy, Reliability, and Integrity**. If a user tries to insert or update data that violates these rules, the RDBMS will instantly reject the operation.
 
 <p align="center">
-  <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230623123129/SQL-Constraints.png" alt="SQL Constraints Diagram" width="550">
+  <img src="https://i.ytimg.com/vi/fNZCq3YlY3g/maxresdefault.jpg" alt="SQL Constraints Diagram" width="550">
 </p>
 
 ### Summary Table
