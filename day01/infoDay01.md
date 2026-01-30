@@ -234,6 +234,9 @@ In RDBMS, we can store everything in the form of a table, including **Metadata**
 When you take a photo, the image is the "Data". The details (Shutter speed, Date, GPS) are "Metadata".
 <p align="center">
   <img src="https://miro.medium.com/v2/resize:fit:1400/0*HdQollBBct4dkH_0" alt="Metadata Example" width="400">
+</p>
+<hr />
+<p align="center">
   <img src="https://databasetown.com/wp-content/uploads/2023/01/What-is-Database-Metadata-Examples-Types.jpg" alt="Metadata Example" width="400">
 </p>
 
