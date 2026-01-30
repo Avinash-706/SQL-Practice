@@ -90,7 +90,7 @@ The `SELECT` statement is the most powerful command in SQL. It performs three sp
 ### 🖼️ Visualizing Projection vs Selection
 
 <p align="center">
-  <img src="https://www.researchgate.net/publication/365251427/figure/fig5/AS:11431281182854691@1692599194665/A-Depiction-of-the-selection-and-projection-components-of-a-database-query-along-with.tif" alt="Projection vs Selection Diagram" width="500">
+  <img src="ProjectVsSelection.png" alt="Projection vs Selection Diagram" width="500">
 </p>
 
 *   **π (Pi - Projection):** Selects Columns (Vertical).
@@ -215,15 +215,11 @@ graph TB
         E8[OUTPUT<br/>Return Result]
     end
 
-    %% =======================
-    %% FLOWS
-    %% =======================
+    %% Flows
     L1 --> L2 --> L3 --> L4 --> L5 --> L6 --> L7
     E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7 --> E8
 
-    %% =======================
-    %% LOGICAL TO EXECUTION MAP
-    %% =======================
+    %% Mapping
     L2 -.-> E1
     L3 -.-> E2
     L4 -.-> E3
@@ -232,28 +228,28 @@ graph TB
     L1 -.-> E6
     L7 -.-> E7
 
-    %% =======================
-    %% STYLING
-    %% =======================
-    style L fill:#f3f4f6,stroke:#374151,stroke-width:2px
-    style E fill:#f8fafc,stroke:#1e293b,stroke-width:2px
+    %% Subgraph background (neutral)
+    style L fill:#e5e7eb,stroke:#111827,stroke-width:2px,color:#000
+    style E fill:#e5e7eb,stroke:#111827,stroke-width:2px,color:#000
 
-    style L1 fill:#fde2e2,stroke:#b91c1c
-    style L2 fill:#fff7ed,stroke:#c2410c
-    style L3 fill:#ffedd5,stroke:#ea580c
-    style L4 fill:#ecfeff,stroke:#0e7490
-    style L5 fill:#ecfdf5,stroke:#047857
-    style L6 fill:#f0fdf4,stroke:#15803d
-    style L7 fill:#eef2ff,stroke:#3730a3
+    %% Logical nodes
+    style L1 fill:#fecaca,stroke:#991b1b,color:#000
+    style L2 fill:#fed7aa,stroke:#9a3412,color:#000
+    style L3 fill:#fdba74,stroke:#9a3412,color:#000
+    style L4 fill:#a5f3fc,stroke:#0e7490,color:#000
+    style L5 fill:#86efac,stroke:#166534,color:#000
+    style L6 fill:#6ee7b7,stroke:#065f46,color:#000
+    style L7 fill:#c7d2fe,stroke:#3730a3,color:#000
 
-    style E1 fill:#e0f2fe,stroke:#0369a1
-    style E2 fill:#e0f2fe,stroke:#0284c7
-    style E3 fill:#cffafe,stroke:#0891b2
-    style E4 fill:#dcfce7,stroke:#15803d
-    style E5 fill:#bbf7d0,stroke:#166534
-    style E6 fill:#ede9fe,stroke:#5b21b6
-    style E7 fill:#e0e7ff,stroke:#4338ca
-    style E8 fill:#dbeafe,stroke:#1d4ed8,stroke-width:3px
+    %% Execution nodes
+    style E1 fill:#bae6fd,stroke:#075985,color:#000
+    style E2 fill:#7dd3fc,stroke:#075985,color:#000
+    style E3 fill:#67e8f9,stroke:#155e75,color:#000
+    style E4 fill:#86efac,stroke:#166534,color:#000
+    style E5 fill:#4ade80,stroke:#166534,color:#000
+    style E6 fill:#ddd6fe,stroke:#5b21b6,color:#000
+    style E7 fill:#c7d2fe,stroke:#3730a3,color:#000
+    style E8 fill:#93c5fd,stroke:#1d4ed8,stroke-width:3px,color:#000
 ```
 
 #### Detailed Breakdown:
