@@ -297,4 +297,3 @@ graph TB
 
 ---
 *Created for Advanced SQL Learning.*
-```
