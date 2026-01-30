@@ -140,19 +140,48 @@ graph TB
     S --> S5
 
     %% =======================
-    %% CONNECTORS
+    %% CONNECTOR VISIBILITY
     %% =======================
     linkStyle default stroke:#6b7280,stroke-width:4px
 
     %% =======================
-    %% STYLING (SAME AS BEFORE)
+    %% STYLING (REFERENCE MATCH)
     %% =======================
+
+    %% Root
     style OP fill:#e5e7eb,stroke:#111827,stroke-width:3px,color:#000
 
+    %% Operator groups
     style A fill:#fed7aa,stroke:#7c2d12,stroke-width:3px,color:#000
     style R fill:#fecaca,stroke:#7f1d1d,stroke-width:3px,color:#000
     style L fill:#a5f3fc,stroke:#155e75,stroke-width:3px,color:#000
     style S fill:#c7d2fe,stroke:#312e81,stroke-width:3px,color:#000
+
+    %% Arithmetic nodes
+    style A1 fill:#fdba74,stroke:#7c2d12,stroke-width:2px,color:#000
+    style A2 fill:#fdba74,stroke:#7c2d12,stroke-width:2px,color:#000
+    style A3 fill:#fdba74,stroke:#7c2d12,stroke-width:2px,color:#000
+    style A4 fill:#fdba74,stroke:#7c2d12,stroke-width:2px,color:#000
+
+    %% Relational nodes
+    style R1 fill:#fca5a5,stroke:#7f1d1d,stroke-width:2px,color:#000
+    style R2 fill:#fca5a5,stroke:#7f1d1d,stroke-width:2px,color:#000
+    style R3 fill:#fca5a5,stroke:#7f1d1d,stroke-width:2px,color:#000
+    style R4 fill:#fca5a5,stroke:#7f1d1d,stroke-width:2px,color:#000
+    style R5 fill:#fca5a5,stroke:#7f1d1d,stroke-width:2px,color:#000
+    style R6 fill:#fca5a5,stroke:#7f1d1d,stroke-width:2px,color:#000
+
+    %% Logical nodes
+    style L1 fill:#67e8f9,stroke:#155e75,stroke-width:2px,color:#000
+    style L2 fill:#67e8f9,stroke:#155e75,stroke-width:2px,color:#000
+    style L3 fill:#67e8f9,stroke:#155e75,stroke-width:2px,color:#000
+
+    %% Special nodes
+    style S1 fill:#ddd6fe,stroke:#4c1d95,stroke-width:2px,color:#000
+    style S2 fill:#ddd6fe,stroke:#4c1d95,stroke-width:2px,color:#000
+    style S3 fill:#ddd6fe,stroke:#4c1d95,stroke-width:2px,color:#000
+    style S4 fill:#ddd6fe,stroke:#4c1d95,stroke-width:2px,color:#000
+    style S5 fill:#ddd6fe,stroke:#4c1d95,stroke-width:2px,color:#000
 ```
 
 ---
