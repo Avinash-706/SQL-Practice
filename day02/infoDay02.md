@@ -184,7 +184,6 @@ Understanding "How" the database thinks is critical for writing fast queries. Th
 ### 🖼️ The Execution Flow Diagram
 
 ```mermaid
-```mermaid
 graph TB
 
     %% =======================
@@ -259,7 +258,6 @@ graph TB
     style E6 fill:#ddd6fe,stroke:#4c1d95,stroke-width:2px,color:#000
     style E7 fill:#c7d2fe,stroke:#312e81,stroke-width:2px,color:#000
     style E8 fill:#93c5fd,stroke:#1e40af,stroke-width:3px,color:#000
-
 ```
 
 #### Detailed Breakdown:
