@@ -185,7 +185,6 @@ graph LR
     style C fill:#a5f3fc,stroke:#155e75,stroke-width:3px,color:#000
 
     style D fill:#c7d2fe,stroke:#312e81,stroke-width:3px,color:#000
-
 ```
 
 ---
@@ -860,7 +859,7 @@ WHERE SAL > (
 
 The execution order flips here. The Outer Query drives the Inner Query.
 
-````mermaid
+```mermaid
 graph TD
 
     A["START OUTER QUERY SCAN<br/>EMP TABLE ROW ITERATION"]
