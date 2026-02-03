@@ -1,0 +1,368 @@
+==================================================
+ SUB QUERY OPERATORS & JOINS (UPTO INNER JOIN)
+ ==================================================
+
+ ==================================================
+ SUB QUERY OPERATORS
+  ==================================================
+ 
+  DEFINITION
+   -> Sub-query operators are SPECIAL OPERATORS
+   -> They are used to compare values returned by a SUB QUERY
+   -> These operators work ONLY with SUB QUERIES
+   -> RHS (Right Hand Side) MUST be a SUB QUERY
+  
+  LIST OF SUB QUERY OPERATORS
+   -> IN
+   -> ANY
+   -> ALL
+   -> EXISTS
+   -> NOT IN
+   -> NOT EXISTS
+ 
+ 
+ ==================================================
+ ALL OPERATOR
+  ==================================================
+ 
+  DEFINITION
+   -> ALL operator behaves like AND operator
+   -> It is used with RELATIONAL OPERATORS
+   -> Comparison is done with ALL values returned by sub-query
+  
+  SYNTAX
+   -> COLUMN_NAME <RELATIONAL_OPERATOR> ALL (SUB QUERY)
+  
+  RELATIONAL OPERATORS USED
+   -> >
+   -> <
+   -> >=
+   -> <=
+   -> =
+  
+  MEANING
+   -> Condition returns TRUE only if comparison is TRUE for ALL RHS values
+  
+  LOGICAL BEHAVIOR
+   -> Similar to AND operator ✅
+ 
+ ----------------------------------------------
+ INTERNAL FLOW OF ALL OPERATOR
+  ----------------------------------------------
+ 
+  STEP 1
+   -> Sub-query executes first
+  
+  STEP 2
+   -> RHS returns MULTIPLE VALUES
+  
+  STEP 3
+   -> LHS value is compared with EACH RHS value
+  
+  STEP 4
+   -> If ALL comparisons are TRUE → RESULT TRUE
+   -> If ANY comparison FAILS → RESULT FALSE ❌
+  
+ ----------------------------------------------
+ EXAMPLE
+  ----------------------------------------------
+  
+  EMP TABLE
+  
+   EMPNO   ENAME    SAL   DEPTNO
+   --------------------------------
+   101    RAM      5000   10
+   102    AJAY     6000   10
+   103    RAVI     3000   20
+   104    AMIT     8000   30
+  
+  
+  QUERY
+   Find employees earning more than ALL employees of dept 10
+  
+   SELECT *
+   FROM EMP
+   WHERE SAL > ALL
+   (
+     SELECT SAL
+     FROM EMP
+     WHERE DEPTNO = 10
+   );
+  
+  SUB QUERY OUTPUT
+   -> 5000
+   -> 6000
+  
+  INTERNAL CHECK
+   -> SAL > 5000  ✅
+   -> SAL > 6000  ✅
+  
+  FINAL MEANING
+   -> SAL > MAX(SAL) of dept 10
+  
+  IMPORTANT POINTS
+   ✅ ALL behaves like AND
+   ❌ If sub-query returns NULL → result becomes FALSE
+   ❌ Careful with NULL values
+
+
+ ==================================================
+ ANY OPERATOR
+  ==================================================
+ 
+  DEFINITION
+   -> ANY operator behaves like OR operator
+   -> It is used with RELATIONAL OPERATORS
+   -> Comparison is done with ANY ONE value returned by sub-query
+  
+  SYNTAX
+   -> COLUMN_NAME <RELATIONAL_OPERATOR> ANY (SUB QUERY)
+  
+  MEANING
+   -> Condition returns TRUE if comparison is TRUE for AT LEAST ONE RHS value
+  
+  LOGICAL BEHAVIOR
+   -> Similar to OR operator ✅
+ 
+ ----------------------------------------------
+ INTERNAL FLOW OF ANY OPERATOR
+  ----------------------------------------------
+  
+  STEP 1
+   -> Sub-query executes first
+  
+  STEP 2
+   -> RHS returns MULTIPLE VALUES
+  
+  STEP 3
+   -> LHS value is compared with EACH RHS value
+  
+  STEP 4
+   -> If ANY ONE comparison is TRUE → RESULT TRUE ✅
+   -> If ALL comparisons FAIL → RESULT FALSE ❌
+  
+ ----------------------------------------------
+ EXAMPLE
+  ----------------------------------------------
+ 
+  QUERY
+   Find employees earning more than ANY employee of dept 10
+  
+   SELECT *
+   FROM EMP
+   WHERE SAL > ANY
+   (
+     SELECT SAL
+     FROM EMP
+     WHERE DEPTNO = 10
+   );
+  
+  SUB QUERY OUTPUT
+   -> 5000
+   -> 6000
+  
+  INTERNAL MEANING
+   -> SAL > MIN(SAL) of dept 10
+  
+  IMPORTANT POINTS
+   ✅ ANY behaves like OR
+   ✅ Faster comparison than ALL
+   ❌ NULL handling must be careful
+ 
+ 
+ ==================================================
+ COMPARISON : ANY vs ALL
+  ==================================================
+
+  OPERATOR   BEHAVIOR   INTERNAL LOGIC
+  -------------------------------------
+  ANY        OR         Compare with MIN
+  ALL        AND        Compare with MAX
+ 
+
+ ==================================================
+ JOINS
+  ==================================================
+ 
+  DEFINITION
+   -> The process of retrieving data from MULTIPLE TABLES simultaneously
+   -> Tables are combined based on RELATED COLUMNS
+   -> Used to avoid data redundancy
+  
+  WHY JOINS ARE REQUIRED
+   -> Data is stored in normalized form
+   -> Related data exists in different tables
+   -> Joins bring data together meaningfully
+ 
+ ----------------------------------------------
+ TYPES OF JOINS
+  ----------------------------------------------
+  
+  1. CARTESIAN JOIN (CROSS JOIN)
+  2. INNER JOIN (EQUI JOIN)
+  3. NATURAL JOIN
+  4. SELF JOIN
+  5. OUTER JOIN
+      i. LEFT OUTER JOIN
+      ii. RIGHT OUTER JOIN
+      iii. FULL OUTER JOIN
+ 
+
+ ==================================================
+ CARTESIAN JOIN / CROSS JOIN
+  ==================================================
+  
+  DEFINITION
+   -> Each record of TABLE 1 merges with ALL records of TABLE 2
+   -> Produces MAXIMUM number of rows
+  
+  FORMULA
+   -> TOTAL ROWS = ROWS_IN_TABLE1 * ROWS_IN_TABLE2
+  
+ ----------------------------------------------
+ SYNTAX
+  ----------------------------------------------
+ 
+  ANSI STYLE
+   SELECT COLUMN_NAME
+   FROM TABLE1
+   CROSS JOIN TABLE2;
+  
+  ORACLE STYLE
+   SELECT COLUMN_NAME
+   FROM TABLE1, TABLE2;
+  
+ ----------------------------------------------
+ INTERNAL EXECUTION FLOW
+  ----------------------------------------------
+ 
+  STEP 1
+   -> Pick first row from table1
+  
+  STEP 2
+   -> Combine with ALL rows of table2
+  
+  STEP 3
+   -> Repeat for next row of table1
+ 
+ ----------------------------------------------
+ EXAMPLE
+  ----------------------------------------------
+ 
+  TABLE A
+  
+   ID
+   ---
+   1
+   2
+  
+  TABLE B
+  
+   NAME
+   ------
+   X 
+   Y
+   Z
+  
+  RESULT ROWS = 2 * 3 = 6
+  
+  IMPORTANT POINTS
+   ❌ No join condition used
+   ❌ Produces huge data
+   ❌ Mostly avoided in real projects
+ 
+ 
+ 
+ ==================================================
+ INNER JOIN / EQUI JOIN
+  ==================================================
+ 
+  DEFINITION
+   -> Used to retrieve ONLY MATCHING RECORDS
+   -> Rows are returned ONLY when join condition is satisfied
+ 
+ ----------------------------------------------
+ SYNTAX
+  ----------------------------------------------
+ 
+  ANSI STYLE
+   SELECT COLUMN_NAME
+   FROM TABLE1
+   INNER JOIN TABLE2
+   ON <JOIN_CONDITION>;
+  
+  ORACLE STYLE
+   SELECT COLUMN_NAME
+   FROM TABLE1, TABLE2
+   WHERE <JOIN_CONDITION>;
+ 
+ ----------------------------------------------
+ JOIN CONDITION
+  ----------------------------------------------
+ 
+  DEFINITION
+   -> Join condition defines HOW tables are merged
+   -> Based on RELATED COLUMNS
+  
+  SYNTAX
+   -> TABLE1.COLUMN_NAME = TABLE2.COLUMN_NAME
+ 
+ ----------------------------------------------
+ INTERNAL FLOW OF INNER JOIN
+  ----------------------------------------------
+ 
+  STEP 1
+   -> Database reads first row from table1
+  
+  STEP 2
+   -> Matches it with rows of table2 using ON condition
+  
+  STEP 3
+   -> If match found → row included ✅
+   -> If no match → row ignored ❌
+  
+  STEP 4
+   -> Process repeats for all rows
+ 
+ ----------------------------------------------
+ EXAMPLE
+  ----------------------------------------------
+ 
+  EMP TABLE
+  
+   EMPNO   ENAME   DEPTNO
+   ----------------------
+   1       RAM     10
+   2       AJAY    20
+   3       RAVI    30
+  
+  DEPT TABLE
+  
+   DEPTNO   DNAME
+   ----------------
+   10       HR
+   20       IT
+  
+  QUERY
+  
+   SELECT ENAME, DNAME
+   FROM EMP
+   INNER JOIN DEPT
+   ON EMP.DEPTNO = DEPT.DEPTNO;
+  
+  OUTPUT
+  
+   ENAME   DNAME
+   ----------------
+   RAM     HR
+   AJAY    IT
+  
+  IMPORTANT CHARACTERISTICS
+   ✅ Returns ONLY matching rows
+   ❌ Non-matching rows are ignored
+   ✅ Most commonly used JOIN
+   ✅ Faster than outer joins
+
+==================================================
+END OF NOTES (UPTO INNER JOIN)
+==================================================
