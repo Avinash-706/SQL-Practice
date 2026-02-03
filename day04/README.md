@@ -649,21 +649,40 @@ graph TD;
 ---
 
 ## 8. HAVING: THE POST-FILTER
+
 **Definition:** The `HAVING` clause is used to filter **Groups (Buckets)** based on the result of an Aggregate Function.
 
-*   Think of `WHERE` as a "Pre-Filter" (Inputs).
-*   Think of `HAVING` as a "Post-Filter" (Outputs).
+*   Think of `WHERE` as a **"Pre-Filter"** (Filters raw input rows).
+*   Think of `HAVING` as a **"Post-Filter"** (Filters calculated output groups).
 
 <p align="center">
   <img src="https://cdn.educba.com/academy/wp-content/uploads/2019/10/SQL-HAVING-Clause.png" alt="Having Clause Syntax | Defination" width="600">
 </p>
 
 ### 📜 Characteristics of HAVING
-1.  **Group Filter:** It is designed specifically to accept or reject complete groups.
+1.  **Group Filter:** It is designed specifically to accept or reject complete groups/buckets.
 2.  **Executes Group-by-Group:** It runs only *after* the `GROUP BY` clause has finished creating buckets and performing calculations.
-3.  **Aggregate Support:** We **CAN** pass Multi-Row functions (like `SUM`, `COUNT`) inside `HAVING`. (This is illegal in `WHERE`).
-4.  **Logical Operators:** Supports multiple conditions using `AND` / `OR`.
+3.  **Aggregate Support:** We **CAN** pass Multi-Row functions (like `SUM`, `COUNT`, `AVG`) inside `HAVING`. (This is illegal in `WHERE`).
+4.  **Logical Operators:** Supports multiple conditions using `AND` / `OR` to filter groups.
 5.  **Dependency:** While `HAVING` usually accompanies `GROUP BY`, if used without it, it treats the entire table as one single group.
+
+---
+
+### 🚫 The Wildcard (`*`) Restriction in Grouping
+
+In standard SQL, you **cannot** use `SELECT *` directly when using `GROUP BY` or `HAVING`. Similarly, `GROUP BY *` is invalid syntax.
+
+#### ❓ Why is the Asterisk (`*`) prohibited?
+1.  **Ambiguity:** `GROUP BY` requires the SQL engine to know precisely which columns define the groups. The wildcard `*` represents a dynamic set of all columns, which makes the grouping criteria ambiguous.
+2.  **Deterministic Results:** The `HAVING` clause filters based on grouping columns or aggregate results. Since `*` is not a specific column or an aggregate function, the engine cannot evaluate a condition against it.
+
+#### 💻 Syntax Comparison
+
+| Type | SQL Code | Result |
+| :--- | :--- | :--- |
+| ❌ **Invalid** | `SELECT * FROM Orders GROUP BY *;` | **ERROR:** Not a group by expression. |
+| ❌ **Invalid** | `SELECT * FROM Orders GROUP BY CustomerID;` | **ERROR:** Cardinality Mismatch (See Projection Rule). |
+| ✅ **Valid** | `SELECT CustomerID, COUNT(OrderID) FROM Orders GROUP BY CustomerID HAVING COUNT(OrderID) > 5;` | **SUCCESS:** Returns specific groups. |
 
 ---
 
@@ -686,6 +705,8 @@ graph TD;
 
 ### 🧪 Combined Execution Flow (The "Filter-Group-Filter" Chain)
 
+To master the logic, understand that a single query undergoes a **dual-filtering process**.
+
 <p align="center">
   <img src="https://cdn.educba.com/academy/wp-content/uploads/2019/11/How-HAVING-clause-works.png" alt="Having Clause Flow" width="600">
 </p>
@@ -699,55 +720,68 @@ GROUP BY DEPTNO          -- (2) Make Buckets
 HAVING SUM(SAL) > 5000;  -- (3) Filter Buckets
 ```
 
-**Step 1: WHERE Execution (Row Filter)**
-*   Engine reads row with Dept 30.
-*   Condition `!= 30` is False.
-*   **Action:** Discards Row 30 immediately. It never reaches the grouping stage.
+#### 🏭 Internal Step-by-Step Execution:
 
-**Step 2: GROUP BY Execution (Bucketing)**
-*   Remaining rows (Dept 10 and 20) are sorted and bucketed.
-*   *Bucket 10 Sum:* 6000
-*   *Bucket 20 Sum:* 6000
+1.  **Step 1: WHERE Execution (Row Filter)**
+    *   The engine scans the `EMP` table. 
+    *   It encounters a row belonging to Dept 30.
+    *   Condition `DEPTNO != 30` is **False**.
+    *   **Action:** Discards the row immediately. This data never enters the memory "Buckets".
 
-**Step 3: HAVING Execution (Group Filter)**
-*   Condition: `SUM > 5000`?
-*   **Check Bucket 10:** Is $6000 > 5000$? **Yes.** $\rightarrow$ Keep Bucket.
-*   **Check Bucket 20:** Is $6000 > 5000$? **Yes.** $\rightarrow$ Keep Bucket.
+2.  **Step 2: GROUP BY Execution (Bucketing)**
+    *   Remaining rows (from Dept 10 and 20) are sorted and organized into buckets.
+    *   **Resulting Memory Buckets:**
+        *   *Bucket 10 Total Sum:* 6000
+        *   *Bucket 20 Total Sum:* 6000
 
-**Step 4: PROJECTION**
-*   Display the surviving buckets.
+3.  **Step 3: HAVING Execution (Group Filter)**
+    *   The engine now applies the condition `SUM(SAL) > 5000` to the **buckets**, not individual rows.
+    *   **Check Bucket 10:** Is $6000 > 5000$? **Yes.** $\rightarrow$ Keep Group 10.
+    *   **Check Bucket 20:** Is $6000 > 5000$? **Yes.** $\rightarrow$ Keep Group 20.
+
+4.  **Step 4: PROJECTION (The Display)**
+    *   Only the surviving buckets (10 and 20) are displayed in the final result table.
 
 ---
 
 
 ## 9. SUBQUERIES: THE COMPLETE GUIDE
 
-**Definition:** A Subquery (Inner Query) is a query nested inside a Main Query (Outer Query).
+**Definition:** A Subquery (Inner Query) is a **Query which is written inside another query**. It acts as a nested instruction where the output of the internal query serves as the input for the external query.
 
-### 🏗️ Why use them?
-To handle **Unknown Conditions**.
-*   *Question:* "Who earns more than Jones?"
-*   *Unknown:* We don't know Jones' salary.
-*   *Solution:* Inner query finds Jones' salary; Outer query uses that result.
+`NOTE : We Can Nest Upto 255 Sub-Queries`
+
+### 🏗️ Dependency & Logic Rules
+*   **The Dependency Principle:** The Outer query is **dependent** upon the Inner query. 
+*   **Execution Constraint:** If the inner query does not execute or fails to produce a valid output, the outer query cannot execute. The entire SQL statement will return an error or zero results.
+*   **Unknown Conditions:** In SQL, whenever we encounter **unknown or indirect conditions**, we must apply Subqueries to resolve the unknown value first.
+
+### ❓ When and Why do we use Sub-queries?
+
+| Scenario | Logic | Example |
+| :--- | :--- | :--- |
+| **Case 1: Unknown Conditions** | Used when the filter criteria are indirect or not known beforehand. | Details of employees earning more than **"SMITH"**. (We don't know Smith's salary yet). |
+| **Case 2: Cross-Table Operations** | Used when the **data to be selected** and the **condition to be executed** are present in different tables. | Select names from `EMP` where the Department Location is in the `DEPT` table. |
+
+---
 
 ### 🔄 The Master Execution Order (Standard Subquery)
 For a standard (Non-Correlated) subquery, the execution happens in this strict order:
 
 1.  **Step 1: INNER QUERY (The Pre-Requisite)**
     *   The database executes the innermost query first.
-    *   **Critical Rule:** If this Inner Query fails (syntax error, table missing), the **entire** statement fails immediately. The Outer Query will not even attempt to run.
+    *   **Critical Rule:** If this Inner Query fails, the **entire** statement fails immediately.
 2.  **Step 2: OUTER QUERY - FROM Clause**
-    *   The database loads the table specified in the Outer Query.
+    *   The database identifies and loads the target table for the final selection.
 3.  **Step 3: OUTER QUERY - WHERE Clause**
-    *   The database filters rows by comparing them against the result returned by Step 1.
+    *   The engine filters rows by substituting the "Unknown" condition with the actual result returned by Step 1.
 4.  **Step 4: OUTER QUERY - SELECT Clause**
-    *   The final columns are projected.
+    *   The final result set is projected to the user.
 
 ---
 
 ### 9.1 SINGLE ROW SUBQUERIES
 The Inner Query returns **Exactly One Row and One Column**.
-
 *   **Operators Allowed:** `=` (Equal), `>` (Greater), `<` (Less), `!=` (Not Equal).
 
 **The Code:**
@@ -791,40 +825,23 @@ graph TD
     style G fill:#c7d2fe,stroke:#1e3a8a,stroke-width:3.5px,color:#000
 ```
 
-1.  **Inner:** Finds `JONES` salary $\rightarrow$ Returns `2975`.
-2.  **Transformation:** The query logically becomes: `SELECT * FROM EMP WHERE SAL > 2975`.
-3.  **Outer:** Scans `EMP` table, keeps rows where Salary > 2975, and displays them.
-
 ---
 
 ### 9.2 MULTI-ROW SUBQUERIES
-The Inner Query returns **Multiple Rows** (One Column).
-*   *Note:* Standard operators (`=`, `>`) will fail here because you cannot compare a single value to a list (e.g., `5 = [1, 2, 3]` is invalid).
+The Inner Query returns **Multiple Rows** (One Column). Standard operators like `=` will fail here.
 
 **Operators Allowed:**
-1.  **IN / NOT IN** (List Matching)
-2.  **ANY** (Comparison with Minimum/Maximum)
-3.  **ALL** (Comparison with Every value)
+1.  **IN / NOT IN:** Matches if the value exists anywhere in the list.
+2.  **ANY:** Compares with **at least one** value (e.g., `> ANY` is greater than the Minimum).
+3.  **ALL:** Compares with **every single** value (e.g., `> ALL` is greater than the Maximum).
 
-#### A. IN Operator
-Matches if the value exists *anywhere* in the result list.
+**Example (Case 2 - Different Tables):**
 ```sql
 SELECT * FROM EMP 
 WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT WHERE LOC = 'CHICAGO');
 ```
-*   **Execution:** Inner query returns `[30]`. Outer query becomes `WHERE DEPTNO IN (30)`.
-
-#### B. ANY Operator
-Compares with **at least one** value from the list.
-*   `> ANY (1000, 2000, 3000)` $\rightarrow$ Greater than the **Minimum** (1000).
-    *   *Logic:* Is it greater than 1000 OR 2000 OR 3000?
-*   `< ANY (1000, 2000, 3000)` $\rightarrow$ Less than the **Maximum** (3000).
-
-#### C. ALL Operator
-Compares with **every single** value in the list.
-*   `> ALL (1000, 2000, 3000)` $\rightarrow$ Greater than the **Maximum** (3000).
-    *   *Logic:* Is it greater than 1000 AND 2000 AND 3000?
-*   `< ALL (1000, 2000, 3000)` $\rightarrow$ Less than the **Minimum** (1000).
+*   *Selection Data:* Found in `EMP` table.
+*   *Condition Data:* Found in `DEPT` table.
 
 ---
 
@@ -834,30 +851,25 @@ Compares with **every single** value in the list.
   <img src="https://learnsql247.com/assets/images/Sub-Queries1.jpg" alt="Self-Contained VS Co-Related SubQuery" width="600">
 </p>
 
-**Definition:** A subquery that **depends** on the Outer Query for its values. It cannot execute independently.
-*   *Contrast:* In Single/Multi-row, the Inner query runs **Once**. In Correlated, it runs **Once per Row**.
-
-**Scenario:** *Find employees who earn more than the average salary of **their own** department.*
+**Definition:** A subquery that **depends** on the Outer Query for its values. It cannot execute independently. 
+*   **The Mechanism:** For every single row processed by the Outer query, the Inner query executes once.
 
 **The Code:**
 ```sql
 SELECT E1.ENAME, E1.SAL, E1.DEPTNO
-FROM EMP E1                                 -- Outer Table Alias
+FROM EMP E1                                 -- Outer Table
 WHERE SAL > (
     SELECT AVG(SAL) 
-    FROM EMP E2                             -- Inner Table Alias
-    WHERE E2.DEPTNO = E1.DEPTNO             -- The Correlation (Link)
+    FROM EMP E2                             -- Inner Table
+    WHERE E2.DEPTNO = E1.DEPTNO             -- The Correlation Link
 );
 ```
 
 **🏭 Execution Flow (The Loop):**
 
-> SELECT full_names,contact_number FROM   members  WHERE  membership_number IN (SELECT membership_number FROM movierentals WHERE return_date IS NULL );
 <p align="center">
   <img src="https://www.guru99.com/images/TableSubQuery.png" alt="Sub-Query Execution Flow" width="600">
 </p>
-
-The execution order flips here. The Outer Query drives the Inner Query.
 
 ```mermaid
 graph TD
@@ -900,14 +912,7 @@ graph TD
     style I fill:#f3f4f6,stroke:#374151,stroke-width:3px,color:#000
 ```
 
-1.  **Step 1 (Outer):** Fetch the first candidate row (e.g., SMITH, Dept 20).
-2.  **Step 2 (Pass):** Pass the value `20` into the Inner Query.
-3.  **Step 3 (Inner):** Execute `AVG(SAL)` *only* for Dept 20. Returns `2175`.
-4.  **Step 4 (Compare):** Is Smith's Salary (`800`) > `2175`? **No.**
-5.  **Step 5:** Discard Smith. Move to Next Row (Allen, Dept 30).
-6.  **Step 6:** Inner Query runs again for Dept 30.
-
-> **⚠️ Performance Note:** Correlated subqueries are computationally expensive (Slow). If the table has 10,000 rows, the inner query runs 10,000 times.
+> **⚠️ Performance Note:** Correlated subqueries are computationally expensive because they act like a **nested loop** (N x M complexity). Use them only when set-based operations (Joins) are not possible.
 
 ---
 
