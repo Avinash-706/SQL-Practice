@@ -105,7 +105,7 @@ WHERE SAL < ANY (SELECT SAL FROM EMP WHERE DEPTNO = 10);
 In the `EMP` table, an employee and their manager are both "Employees". They both reside in the same table structure.
 
 <p align="center">
-  <img src="./UnaryRelationship.png" alt="Employee-Manager Relationship" width="600">
+  <img src="./UnaryRelationship_01.png" alt="Employee-Manager Relationship" width="600">
 </p>
 
 ### 📊 The Reference Data (The EMP Table)
@@ -520,7 +520,6 @@ ON Worker.MGR = Boss.EMPNO;
 ## 8. OUTER JOINS
 
 **Definition:** Used to fetch Matching records **PLUS** Non-Matching records from one or both tables.
-
 
 ### 8.1 LEFT OUTER JOIN
 *   **Logic:** Returns **ALL** records from the **Left Table** + Matching records from the Right Table.
