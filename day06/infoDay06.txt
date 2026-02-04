@@ -1,0 +1,486 @@
+==================================================================
+NATURAL JOIN
+ ==================================================================
+
+  --------------------------------------------------
+  DEFINITION
+  --------------------------------------------------
+  
+  NATURAL JOIN is a type of INNER JOIN that automatically joins
+  tables based on COLUMNS WITH SAME NAME AND SAME DATA TYPE.
+  
+  ✔️ No need to specify join condition explicitly
+  ✔️ Uses equality comparison internally
+  ❌ Risky if column names are same unintentionally
+  
+  --------------------------------------------------
+  CHARACTERISTICS
+  --------------------------------------------------
+  
+  ✔️ Automatically identifies common columns
+  ✔️ Removes duplicate join columns in output
+  ❌ Less control over join logic
+  ❌ Not recommended in production systems
+  
+  --------------------------------------------------
+  SYNTAX
+  --------------------------------------------------
+  
+  ANSI:
+  
+  SELECT columns
+  FROM table1 NATURAL JOIN table2;
+  
+  ORACLE:
+  
+  SELECT columns
+  FROM table1 NATURAL JOIN table2;
+  
+  --------------------------------------------------
+  INTERNAL EXECUTION FLOW
+  --------------------------------------------------
+  
+  STEP 1 -> Database scans both tables
+  STEP 2 -> Identifies common column names
+  STEP 3 -> Applies equality condition internally
+  STEP 4 -> Matches records
+  STEP 5 -> Returns only matching rows
+  
+  --------------------------------------------------
+  EXAMPLE
+  --------------------------------------------------
+  
+  EMP(empno, ename, deptno)
+  DEPT(deptno, dname)
+  
+  SELECT ename, dname
+  FROM emp NATURAL JOIN dept;
+  
+  --------------------------------------------------
+  IMPORTANT NOTE
+  --------------------------------------------------
+  
+  ✔️ NATURAL JOIN internally behaves like INNER JOIN
+  ❌ Cannot be used if column names differ
+
+
+
+==================================================================
+SELF JOIN
+==================================================================
+  
+  --------------------------------------------------
+  DEFINITION
+  --------------------------------------------------
+  
+  SELF JOIN is the process of joining a table with ITSELF.
+  
+  ✔️ Same table is used twice
+  ✔️ Table aliases are mandatory
+  
+  --------------------------------------------------
+  WHEN DO WE USE SELF JOIN
+  --------------------------------------------------
+  
+  ✔️ When a table has hierarchical or relational data
+  ✔️ Manager-Employee relationship
+  ✔️ Parent-Child relationship
+  
+  --------------------------------------------------
+  SYNTAX
+  --------------------------------------------------
+  
+  ANSI:
+  
+  SELECT columns
+  FROM table1 alias1
+  JOIN table1 alias2
+  ON join_condition;
+  
+  ORACLE:
+  
+  SELECT columns
+  FROM table1 alias1, table1 alias2
+  WHERE join_condition;
+  
+  --------------------------------------------------
+  INTERNAL EXECUTION FLOW
+  --------------------------------------------------
+  
+  STEP 1 -> Same table loaded twice using aliases
+  STEP 2 -> Rows compared between alias1 and alias2
+  STEP 3 -> Join condition applied
+  STEP 4 -> Matching rows returned
+  
+  --------------------------------------------------
+  EXAMPLE
+  --------------------------------------------------
+  
+  EMP(empno, ename, mgr)
+  
+  SELECT E1.ename AS Employee, E2.ename AS Manager
+  FROM emp E1 JOIN emp E2
+  ON E1.mgr = E2.empno;
+  
+  --------------------------------------------------
+  IMPORTANT POINTS
+  --------------------------------------------------
+  
+  ✔️ Aliases are compulsory
+  ❌ Without alias SQL gets confused
+
+
+
+==================================================================
+OUTER JOIN
+==================================================================
+  
+  --------------------------------------------------
+  DEFINITION
+  --------------------------------------------------
+  
+  OUTER JOIN is used to retrieve MATCHING records
+  AND also UNMATCHED records.
+  
+  ✔️ Used when data is missing in one table
+  
+  --------------------------------------------------
+  TYPES OF OUTER JOIN
+  --------------------------------------------------
+  
+  +---------------------+
+  | TYPE                |
+  +---------------------+
+  | LEFT OUTER JOIN     |
+  | RIGHT OUTER JOIN    |
+  | FULL OUTER JOIN     |
+  +---------------------+
+  
+  
+  
+  ==================================================================
+  LEFT OUTER JOIN
+  ==================================================================
+  
+  --------------------------------------------------
+  DEFINITION
+  --------------------------------------------------
+  
+  Returns:
+  ✔️ All records from LEFT table
+  ✔️ Matching records from RIGHT table
+  ❌ NULL for unmatched right rows
+  
+  --------------------------------------------------
+  SYNTAX
+  --------------------------------------------------
+  
+  ANSI:
+  
+  SELECT columns
+  FROM table1 LEFT OUTER JOIN table2
+  ON join_condition;
+  
+  ORACLE:
+  
+  SELECT columns
+  FROM table1, table2
+  WHERE table1.col = table2.col(+);
+  
+  --------------------------------------------------
+  INTERNAL FLOW
+  --------------------------------------------------
+  
+  STEP 1 -> All rows from LEFT table selected
+  STEP 2 -> Matching rows fetched from RIGHT table
+  STEP 3 -> If no match -> NULL filled
+  
+  --------------------------------------------------
+  EXAMPLE
+  --------------------------------------------------
+  
+  SELECT emp.ename, dept.dname
+  FROM emp LEFT JOIN dept
+  ON emp.deptno = dept.deptno;
+
+
+
+==================================================================
+RIGHT OUTER JOIN
+==================================================================
+  
+  --------------------------------------------------
+  DEFINITION
+  --------------------------------------------------
+  
+  Returns:
+  ✔️ All records from RIGHT table
+  ✔️ Matching records from LEFT table
+  ❌ NULL for unmatched left rows
+  
+  --------------------------------------------------
+  SYNTAX
+  --------------------------------------------------
+  
+  ANSI:
+  
+  SELECT columns
+  FROM table1 RIGHT OUTER JOIN table2
+  ON join_condition;
+  
+  ORACLE:
+  
+  SELECT columns
+  FROM table1, table2
+  WHERE table1.col(+) = table2.col;
+  
+  --------------------------------------------------
+  INTERNAL FLOW
+  --------------------------------------------------
+  
+  STEP 1 -> All rows from RIGHT table selected
+  STEP 2 -> Matching rows fetched from LEFT table
+  STEP 3 -> If no match -> NULL filled
+
+
+
+==================================================================
+FULL OUTER JOIN
+==================================================================
+  
+  --------------------------------------------------
+  DEFINITION
+  --------------------------------------------------
+  
+  Returns:
+  ✔️ Matching records
+  ✔️ Unmatched records from BOTH tables
+  
+  --------------------------------------------------
+  IMPORTANT NOTE
+  --------------------------------------------------
+  
+  ❌ FULL OUTER JOIN does NOT work in MySQL
+  ✔️ Works in Oracle, PostgreSQL, SQL Server
+  
+  --------------------------------------------------
+  ANSI SYNTAX
+  --------------------------------------------------
+  
+  SELECT columns
+  FROM table1 FULL OUTER JOIN table2
+  ON join_condition;
+  
+  --------------------------------------------------
+  HOW FULL OUTER JOIN WORKS INTERNALLY
+  --------------------------------------------------
+  
+  LEFT JOIN result
+  +
+  RIGHT JOIN result
+  -
+  DUPLICATES
+  
+  --------------------------------------------------
+  FULL OUTER JOIN IN MYSQL (WORKAROUND)
+  --------------------------------------------------
+  
+  SELECT *
+  FROM emp LEFT JOIN dept ON emp.deptno = dept.deptno
+  UNION
+  SELECT *
+  FROM emp RIGHT JOIN dept ON emp.deptno = dept.deptno;
+  
+  --------------------------------------------------
+  INTERNAL EXECUTION
+  --------------------------------------------------
+  
+  STEP 1 -> LEFT JOIN executes
+  STEP 2 -> RIGHT JOIN executes
+  STEP 3 -> UNION removes duplicates
+  STEP 4 -> Final combined result
+
+
+
+==================================================================
+TRUNC(), ROUND(), FLOOR(), CEILING
+==================================================================
+  
+  --------------------------------------------------
+  TRUNC()
+  --------------------------------------------------
+  
+  Removes fractional part
+  Moves toward ZERO
+  
+  TRUNC(5.9)  -> 5
+  TRUNC(-5.9) -> -5
+  
+  --------------------------------------------------
+  FLOOR()
+  --------------------------------------------------
+  
+  Moves toward NEGATIVE INFINITY
+  
+  FLOOR(5.9)  -> 5
+  FLOOR(-5.1) -> -6
+  
+  --------------------------------------------------
+  CEIL / CEILING()
+  --------------------------------------------------
+  
+  Moves toward POSITIVE INFINITY
+  
+  CEIL(5.1)  -> 6
+  CEIL(-5.1) -> -5
+  
+  --------------------------------------------------
+  ROUND()
+  --------------------------------------------------
+  
+  Rounds to nearest integer
+  
+  ROUND(5.5) -> 6
+  ROUND(5.4) -> 5
+  
+  --------------------------------------------------
+  COMPARISON TABLE
+  --------------------------------------------------
+  
+  +---------+---------------------------+
+  | FUNCTION| BEHAVIOR                  |
+  +---------+---------------------------+
+  | TRUNC   | Toward zero               |
+  | FLOOR   | Toward -infinity          |
+  | CEIL    | Toward +infinity          |
+  | ROUND   | Nearest value             |
+  +---------+---------------------------+
+
+
+
+==================================================================
+CO-RELATED SUBQUERY
+==================================================================
+  --------------------------------------------------
+  DEFINITION
+  --------------------------------------------------
+  
+  A co-related subquery is a query where
+  INNER and OUTER queries depend on EACH OTHER.
+  
+  ✔️ Executes row-by-row
+  ✔️ Join condition is mandatory
+  
+  --------------------------------------------------
+  WORKING PRINCIPLE
+  --------------------------------------------------
+  
+  Outer Query -> partial execution
+          |
+          v
+  Inner Query -> full execution
+          |
+          v
+  Outer Query -> final result
+  
+  --------------------------------------------------
+  EXECUTION STEPS
+  --------------------------------------------------
+  
+  1 -> Outer query executes partially
+  2 -> Passes value to inner query
+  3 -> Inner query executes completely
+  4 -> Result returned to outer query
+  5 -> Process repeats for each row
+  
+  --------------------------------------------------
+  RULES
+  --------------------------------------------------
+  ✔️ Join condition must be inside INNER QUERY
+  ✔️ Cannot run inner query independently
+  ✔️ Slower than normal subquery
+  
+  
+  A QUERY WRITTEN INSIDE ANOTHER QUERY SUCH THAT OUTER QUERY 
+  AND THE INNER QUERY ARE DEPENDENT ON EACH OTHER.
+  Working Principle:
+                           RESULT
+                             ^
+                             |
+                             |
+                      +----------------+
+                      |   OUTER QUERY  |
+                      +----------------+
+                         ^          |
+                         | i/p      | o/p
+                         |          | (Partial)
+                         |          v
+                      +----------------+
+                      |   INNER QUERY  |
+                      +----------------+
+                         ^          |
+                         | o/p      | i/p
+                         |          |
+                         +----------+
+  
+  NOTE:
+  -> Outer Query executes partially and sends input to Inner Query
+  -> Inner Query executes completely and sends output back to Outer Query
+  -> Both queries depend on each other
+  
+  
+  Let us consider two queries inner and outer query.
+  1. Outer query executes first, but partially.
+  2. The partially executes output is given as an input to the inner query.
+  3. The inner query executes completely and generate the output.
+  4. The output of inner query is fed as an input to the outer query and outer query produces the result.
+  5. Therefore, we can state that the outer query and inner query both are interdependent (dependent on each other).
+  
+  NOTE:
+  i.    In co-related sub query a Join condition is a must, and must be written only in the Inner Query
+  ii.   Co-Related sub query works with the principles of both SUB QUERY & JOINS
+  
+  DIFFERENCE BETWEEN SUBQUERY AND CO-RELATED SUBQUERY
+  (WITH EXECUTION EXPLANATION)
+  
+  +-----------------------------+--------------------------------------+---------------------------------------------+
+  |        PARAMETER            |              SUB QUERY               |         CO-RELATED SUB QUERY                |
+  +-----------------------------+--------------------------------------+---------------------------------------------+
+  | Execution Order             | Inner query executes first           | Outer query executes first                  |
+  |                             |                                      |                                             |
+  | Execution Explanation       | Inner query runs completely first    | Outer query starts execution and passes     |
+  |                             | and produces a result set.           | partial values to inner query row-by-row.   |
+  +-----------------------------+--------------------------------------+---------------------------------------------+
+  | Dependency                  | Outer query depends on inner query   | Both inner and outer queries depend on      |
+  |                             |                                      | each other                                  |
+  | Execution Explanation       | Outer query waits until inner query  | Inner query uses values from outer query,   |
+  |                             | finishes execution.                  | and outer query waits for inner query       |
+  |                             |                                      | result for every row.                       |
+  +-----------------------------+--------------------------------------+---------------------------------------------+
+  | Join Condition              | Join condition is not mandatory      | Join condition is mandatory                 |
+  |                             |                                      |                                             |
+  | Execution Explanation       | Inner query can execute independently| Inner query cannot execute independently    |
+  |                             | without referencing outer query.     | because it references outer query columns. |
+  +-----------------------------+--------------------------------------+---------------------------------------------+
+  | Number of Executions        | Outer query executes only once       | Outer query executes multiple times         |
+  |                             |                                      | (commonly said as twice in exams)           |
+  | Execution Explanation       | Result of inner query is reused by   | For each row of outer query, inner query    |
+  |                             | outer query only one time.           | executes again.                             |
+  +-----------------------------+--------------------------------------+---------------------------------------------+
+  | Performance                 | Generally faster                     | Generally slower                            |
+  |                             |                                      |                                             |
+  | Execution Explanation       | Inner query result is computed once. | Inner query executes repeatedly for each    |
+  |                             |                                      | outer row, increasing execution cost.       |
+  +-----------------------------+--------------------------------------+---------------------------------------------+
+  
+  
+  VERY IMPORTANT EXAM POINTS
+  -> Subquery executes independently
+  -> Co-related subquery executes row-by-row
+  -> Co-related subquery ALWAYS needs a join condition
+  -> Join condition must be written ONLY in INNER QUERY
+  -> Co-related subquery follows principles of SUBQUERY + JOIN
+
+==================================================================
+END OF NOTES
+==================================================================
