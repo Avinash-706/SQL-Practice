@@ -127,8 +127,9 @@ The SQL Engine creates two virtual instances (aliases) of the table in memory.
   "theme": "base",
   "themeVariables": {
     "lineColor": "#9ca3af",
-    "primaryTextColor": "#e5e7eb",
+    "primaryTextColor": "#000000",
     "fontSize": "13px"
+
   }
 }}%%
 
@@ -724,7 +725,7 @@ WHERE SAL > (
   "themeVariables": {
     "background": "#0d1117",
     "lineColor": "#8b949e",
-    "primaryTextColor": "#c9d1d9",
+    "primaryTextColor": "#000000",
     "fontSize": "13px"
   }
 }}%%
@@ -752,12 +753,12 @@ Result2 --> Compare2{"Is 2000 > 1500?"}
 Compare2 -- Yes --> Keep2["Keep ALLEN<br/>Add to Output"]
 
 %% ===== Styling (Premium Grey Palette) =====
-classDef start fill:#1f2933,stroke:#6b7280,color:#e5e7eb;
-classDef scan fill:#111827,stroke:#6b7280,color:#e5e7eb;
-classDef inner fill:#374151,stroke:#9ca3af,color:#f9fafb;
-classDef result fill:#4b5563,stroke:#9ca3af,color:#f9fafb;
-classDef decision fill:#1e293b,stroke:#9ca3af,color:#f9fafb;
-classDef action fill:#0f172a,stroke:#9ca3af,color:#f9fafb;
+classDef start fill: #1f2933,stroke:#6b7280,color:#e5e7eb;
+classDef scan fill: #111827,stroke:#6b7280,color:#e5e7eb;
+classDef inner fill: #374151,stroke:#9ca3af,color:#f9fafb;
+classDef result fill: #4b5563,stroke:#9ca3af,color:#f9fafb;
+classDef decision fill: #1e293b,stroke:#9ca3af,color:#f9fafb;
+classDef action fill: #0f172a,stroke:#9ca3af,color:#f9fafb;
 
 class Start start
 class Row1,Row2 scan
