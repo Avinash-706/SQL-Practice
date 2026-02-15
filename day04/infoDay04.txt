@@ -1,0 +1,417 @@
+==============================================
+SQL OPERATORS, FUNCTIONS & SUB QUERIES NOTES
+==============================================
+
+
+==============================================
+IS OPERATOR
+==============================================
+
+DEFINITION
+ -> IS / IS NOT operator is used to check NULL or NOT NULL values
+ -> It is a SPECIAL OPERATOR
+ -> It is NOT used for value comparison like = or !=
+
+WHY IS OPERATOR IS REQUIRED
+ -> NULL means UNKNOWN VALUE
+ -> UNKNOWN cannot be compared using = or !=
+ -> Hence IS NULL / IS NOT NULL is mandatory
+
+SYNTAX
+ -> COLUMN_NAME IS NULL
+ -> COLUMN_NAME IS NOT NULL
+
+
+EMP TABLE
+
+ EMPNO   ENAME    COMM
+ ---------------------
+ 101    RAM      500
+ 102    SHYAM    NULL
+ 103    AJAY     300
+ 104    RAVI     NULL
+
+
+QUERY
+ SELECT * FROM EMP WHERE COMM IS NOT NULL;
+
+OUTPUT
+ EMPNO   ENAME    COMM
+ ---------------------
+ 101    RAM      500
+ 103    AJAY     300
+
+
+IMPORTANT CHARACTERISTICS
+ ✅ Used ONLY with NULL
+ ❌ Cannot use = NULL
+ ❌ Cannot use != NULL
+ ✅ Works with WHERE and HAVING clauses
+
+
+
+==============================================
+LIKE OPERATOR
+==============================================
+
+DEFINITION
+ -> LIKE operator is used to MATCH PATTERNS
+ -> Mainly used with CHARACTER DATA
+ -> Works using WILDCARD CHARACTERS
+
+SYNTAX
+ -> COLUMN_NAME LIKE 'PATTERN';
+
+WHY % IS NOT USED IN ARITHMETIC
+ -> % in SQL LIKE is a PATTERN MATCHING SYMBOL
+ -> It does NOT represent modulus
+ -> Modulus uses MOD() function
+
+WILDCARD CHARACTERS
+ -> %  (ANY NUMBER OF CHARACTERS)
+ -> _  (ONLY ONE CHARACTER)
+
+
+----------------------------------------------
+WILDCARD : %
+----------------------------------------------
+
+MEANING
+ -> Zero characters
+ -> One character
+ -> Multiple characters
+
+EMP TABLE
+
+ ENAME
+ ------
+ AMIT
+ AJAY
+ AARAV
+ RAMESH
+ ANAND
+ SURAJ
+
+
+PATTERN TABLE
+
+ CONDITION                     PATTERN
+ ---------------------------------------
+ STARTS WITH A                A%
+ ENDS WITH A                  %A
+ CONTAINS A                   %A%
+ CONTAINS A TWICE             %A%A%
+ CONTAINS AA                  %AA%
+ STARTS WITH A AND ENDS N     A%N
+
+
+----------------------------------------------
+WILDCARD : _
+----------------------------------------------
+
+MEANING
+ -> Represents EXACTLY ONE CHARACTER
+
+PATTERN TABLE
+
+ CONDITION                     PATTERN
+ ---------------------------------------
+ SECOND CHARACTER IS A        _A%
+ THIRD CHARACTER IS A         __A%
+ SECOND LAST IS A             %A_
+ THIRD LAST IS A              %A__
+
+
+
+==============================================
+NOT LIKE OPERATOR
+==============================================
+
+DEFINITION
+ -> NOT LIKE operator REJECTS patterns
+ -> Opposite of LIKE
+
+SYNTAX
+ -> COLUMN_NAME NOT LIKE 'PATTERN';
+
+CHARACTERISTICS
+ ✅ Used to EXCLUDE records
+ ❌ Cannot work without LIKE pattern
+
+
+
+==============================================
+CONCATENATION OPERATOR
+==============================================
+
+DEFINITION
+ -> Used to COMBINE strings
+
+DATABASE DIFFERENCE TABLE
+
+ DATABASE        METHOD
+ -------------------------
+ MYSQL           CONCAT()
+ ORACLE          ||
+ POSTGRES        ||
+
+MYSQL EXAMPLE
+ SELECT CONCAT('MR.', ENAME) FROM EMP;
+
+ORACLE / POSTGRES
+ SELECT 'MR.' || ' ' || ENAME FROM EMP;
+
+
+
+==============================================
+FUNCTIONS IN SQL
+==============================================
+
+DEFINITION
+ -> Functions are PREDEFINED blocks of code
+ -> Used to perform specific tasks
+ -> Always RETURN A VALUE
+
+TYPES OF FUNCTIONS
+ -> In-Built Functions
+ -> User Defined Functions
+
+
+==============================================
+SINGLE ROW FUNCTIONS
+==============================================
+
+DEFINITION
+ -> Operates on EACH ROW
+ -> Returns ONE OUTPUT PER ROW
+
+RULE
+ -> n input  -> n output
+
+EXECUTION FLOW
+ -> Reads one row
+ -> Applies function
+ -> Produces output
+ -> Moves to next row
+
+COMMON FUNCTIONS
+
+ CHARACTER FUNCTIONS
+  -> UPPER()
+  -> LOWER()
+  -> LENGTH()
+  -> SUBSTR()
+  -> INSTR()
+
+ NUMBER FUNCTIONS
+  -> ROUND()
+  -> FLOOR()
+  -> CEIL()
+
+ DATE FUNCTIONS
+  -> SYSDATE
+  -> ADD_MONTHS()
+
+ CONVERSION FUNCTIONS
+  -> TO_CHAR()
+  -> TO_DATE()
+
+
+
+==============================================
+MULTI ROW FUNCTIONS (AGGREGATE)
+==============================================
+
+DEFINITION
+ -> Operates on MULTIPLE ROWS
+ -> Returns SINGLE OUTPUT
+
+RULE
+ -> n input -> 1 output
+
+LIST
+ -> MAX()
+ -> MIN()
+ -> SUM()
+ -> AVG()
+ -> COUNT()
+
+
+----------------------------------------------
+CHARACTERISTICS OF MULTI ROW FUNCTIONS
+----------------------------------------------
+
+1. ARGUMENT RULE
+ ✅ Accepts ONLY ONE argument
+ ❌ SUM(SAL, COMM) is INVALID
+
+2. COLUMN RESTRICTION
+ ❌ Cannot use normal columns without GROUP BY
+ -> Causes ambiguity
+
+3. NULL HANDLING
+ ✅ IgnoRES NULL values automatically
+
+4. WHERE CLAUSE RESTRICTION
+ ❌ Cannot use aggregate in WHERE
+ -> WHERE works ROW BY ROW
+ -> Aggregate works GROUP BY GROUP
+
+5. COUNT SPECIAL RULE
+ ✅ COUNT(*) allowed
+ -> Counts NULL + NON NULL
+
+6. DATA TYPE RULE
+ ✅ MAX, MIN, COUNT -> Any data
+ ❌ SUM, AVG -> ONLY numeric
+
+----------------------------------------------
+INTERNAL WORKING OF MULTI ROW FUNCTION
+----------------------------------------------
+
+STEP 1
+ -> Database scans rows
+
+STEP 2
+ -> Forms groups (if GROUP BY exists)
+
+STEP 3
+ -> Ignores NULL values
+
+STEP 4
+ -> Applies aggregate logic
+
+STEP 5
+ -> Returns single result per group
+
+
+
+==============================================
+GROUP BY CLAUSE
+==============================================
+
+DEFINITION
+ -> Used to GROUP records
+
+EXECUTION ORDER
+ -> FROM
+ -> WHERE
+ -> GROUP BY
+ -> HAVING
+ -> SELECT
+ -> ORDER BY
+
+----------------------------------------------
+INTERNAL FLOW OF GROUP BY
+----------------------------------------------
+
+STEP 1
+ -> Reads table row by row
+
+STEP 2
+ -> Identifies unique group keys
+
+STEP 3
+ -> Creates memory groups
+
+STEP 4
+ -> Applies aggregate function
+
+STEP 5
+ -> Returns grouped output
+
+
+
+==============================================
+HAVING CLAUSE
+==============================================
+
+DEFINITION
+ -> Used to FILTER GROUPS
+
+CHARACTERISTICS
+ ✅ Executes AFTER GROUP BY
+ ✅ Works GROUP BY GROUP
+ ✅ Allows aggregate functions
+ ❌ WHERE cannot do this
+ ✅ GROUP BY mandatory
+ ✅ Multiple conditions allowed
+
+FLOW
+ -> Group created
+ -> Aggregate calculated
+ -> HAVING condition applied
+ -> Result returned
+
+
+
+==============================================
+SUB QUERY
+==============================================
+
+DEFINITION
+ -> Query inside another query
+
+RULES
+ -> Inner query executes FIRST
+ -> Outer depends on inner
+ -> Inner failure stops outer
+
+WHEN TO USE
+ -> Unknown or indirect condition
+
+----------------------------------------------
+SUB QUERY EXECUTION FLOW
+----------------------------------------------
+
+STEP 1
+ -> Inner query executes
+
+STEP 2
+ -> Output stored temporarily
+
+STEP 3
+ -> Outer query uses output
+
+STEP 4
+ -> Final result produced
+
+
+
+==============================================
+TYPES OF SUB QUERIES
+==============================================
+
+SINGLE ROW SUB QUERY
+ -> Returns ONE value
+ -> Uses =, >, <
+
+MULTI ROW SUB QUERY
+ -> Returns MULTIPLE values
+ -> Uses IN, ANY, ALL
+
+CORRELATED SUB QUERY
+ -> Executes once per outer row
+ -> Slower but powerful
+
+----------------------------------------------
+ANY vs ALL INTERNAL LOGIC
+----------------------------------------------
+
+ANY
+ -> Condition TRUE if matches MIN value
+
+ALL
+ -> Condition TRUE if matches MAX value
+
+----------------------------------------------
+EXISTS INTERNAL WORKING
+----------------------------------------------
+
+ -> Checks row existence
+ -> Does NOT compare values
+ -> Very fast
+
+==============================================
+END OF NOTES
+==============================================
